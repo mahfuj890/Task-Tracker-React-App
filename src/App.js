@@ -3,7 +3,9 @@ import "./App.css";
 import Header from "./Component/Header";
 import React, { useState } from "react";
 import Tasks from "./Component/Tasks";
+import AddTask from "./Component/AddTask";
 function App() {
+  const [showAddTask, setShowAddTask] = useState(false)
   const [tasks, setTasks] = useState([
     {
       id: 1,
@@ -24,6 +26,14 @@ function App() {
       reminder: false,
     },
   ]);
+  //Add Task from input
+  const addTask=(task)=>{
+    const id = Math.floor(Math.random() * 10000) + 1;
+    console.log(id);
+    const newTask = {id,...task};
+    setTasks([...tasks,newTask])
+  }
+
   //Delete Task
   const deleteTask = (id) => {
     setTasks(tasks.filter((task) => task.id !== id));
@@ -36,9 +46,14 @@ function App() {
       )
     );
   };
+
   return (
     <div className="container">
-      <Header title="Task Tracker" />
+      <Header title="Task Tracker" onToggleForm={()=>setShowAddTask(!showAddTask)} changeText={showAddTask} />
+      {
+        showAddTask &&   <AddTask onAdd={addTask} />
+      }
+
       {tasks.length > 0 ? (
         <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleRemainder} />
       ) : (

@@ -1,16 +1,14 @@
 import PropTypes from 'prop-types'
 import Button from './Button'
-import Tasks from './Tasks';
 
-function Header({title}) {
-    const buttonClick2 = (e)=>{
-        console.log("click",e);
-    }
+
+function Header({title,onToggleForm,changeText}) {
+
     return (
         <header className='header'>
             <h1 className='title'  >{title}</h1>
-        <Button buttonText="Add" buttonClick={buttonClick2}  />
-      
+        <Button bgColor= {changeText ? "red": "black" }buttonText= {changeText ? "Close": "Add" } buttonClick={onToggleForm}     />
+
 
         </header>
     )
