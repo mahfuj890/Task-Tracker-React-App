@@ -4,8 +4,14 @@ import Header from "./Component/Header";
 import React, { useState } from "react";
 import Tasks from "./Component/Tasks";
 import AddTask from "./Component/AddTask";
+import Footer from "./Component/Footer";
+import { render } from "react-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import About from "./Component/About";
+import { func } from "prop-types";
+
 function App() {
-  const [showAddTask, setShowAddTask] = useState(false)
+  const [showAddTask, setShowAddTask] = useState(false);
   const [tasks, setTasks] = useState([
     {
       id: 1,
@@ -27,12 +33,12 @@ function App() {
     },
   ]);
   //Add Task from input
-  const addTask=(task)=>{
+  const addTask = (task) => {
     const id = Math.floor(Math.random() * 10000) + 1;
     console.log(id);
-    const newTask = {id,...task};
-    setTasks([...tasks,newTask])
-  }
+    const newTask = { id, ...task };
+    setTasks([...tasks, newTask]);
+  };
 
   //Delete Task
   const deleteTask = (id) => {
@@ -48,18 +54,32 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <Header title="Task Tracker" onToggleForm={()=>setShowAddTask(!showAddTask)} changeText={showAddTask} />
-      {
-        showAddTask &&   <AddTask onAdd={addTask} />
-      }
+    <BrowserRouter>
+      <div className="container">
+        <Header
+          title="Task Tracker"
+          onToggleForm={() => setShowAddTask(!showAddTask)}
+          changeText={showAddTask}
+        />
+        {showAddTask && <AddTask onAdd={addTask} />}
 
-      {tasks.length > 0 ? (
-        <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleRemainder} />
-      ) : (
-        "No Task ADD Yet"
-      )}
-    </div>
+        {tasks.length > 0 ? (
+          <Tasks
+            tasks={tasks}
+            onDelete={deleteTask}
+            onToggle={toggleRemainder}
+          />
+        ) : (
+          "No Task ADD Yet"
+        )}
+
+        <Routes>
+          <Route path="/about" element={<About />} />
+        </Routes>
+
+        <Footer />
+      </div>
+    </BrowserRouter>
   );
 }
 
